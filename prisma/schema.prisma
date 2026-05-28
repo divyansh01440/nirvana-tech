@@ -1,0 +1,321 @@
+// =============================================================================
+// 🗄️ NIRVANA TECH — Prisma Schema
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================================================
+// 👤 USER & AUTH
+// =============================================================================
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  name            String?
+  password        String?
+  emailVerified   DateTime?
+  image           String?
+  role            UserRole  @default(CLIENT)
+  bio             String?
+
+  // 2FA / OTP
+  twoFAEnabled    Boolean   @default(false)
+  twoFASecret     String?
+  otpCode         String?
+  otpExpires      DateTime?
+
+  // Lockout
+  failedAttempts  Int       @default(0)
+  lockedUntil     DateTime?
+
+  // Tracking
+  lastLoginAt     DateTime?
+  lastLoginIp     String?
+  lastLoginDevice String?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  loginHistory    LoginHistory[]
+  notifications   Notification[]
+  assignedTasks   Task[]         @relation("AssignedTasks")
+  notes           Note[]
+  sentMessages    ChatMessage[]
+  channels        ChatChannel[]  @relation("ChannelMembers")
+  client          Client?
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  TEAM
+  CLIENT
+}
+model LoginHistory {
+  id        String   @id @default(cuid())
+  userId    String
+  ip        String?
+  userAgent String?
+  location  String?
+  success   Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// =============================================================================
+// 👥 TEAM
+// =============================================================================
+
+model TeamMember {
+  id          String   @id @default(cuid())
+  name        String
+  role        String
+  bio         String?
+  image       String?
+  email       String?  @unique
+  linkedin    String?
+  twitter     String?
+  github      String?
+  dribbble    String?
+  isFounder   Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// =============================================================================
+// 💼 PROJECTS & CLIENTS
+// =============================================================================
+
+model Project {
+  id            String        @id @default(cuid())
+  title         String
+  slug          String        @unique
+  category      String
+  client        String
+  description   String?
+  longDescription String?
+  image         String?
+  gallery       String[]
+  technologies  String[]
+  liveUrl       String?
+  caseStudyUrl  String?
+  status        ProjectStatus @default(IN_PROGRESS)
+  featured      Boolean       @default(false)
+  order         Int           @default(0)
+  startDate     DateTime?
+  endDate       DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  tasks         Task[]
+  clientId      String?
+  clientRel     Client?       @relation(fields: [clientId], references: [id])
+  channel       ChatChannel?
+}
+
+enum ProjectStatus {
+  PLANNING
+  IN_PROGRESS
+  REVIEW
+  LIVE
+  ARCHIVED
+}
+
+model Client {
+  id           String   @id @default(cuid())
+  userId       String?  @unique
+  companyName  String
+  contactName  String
+  email        String
+  phone        String?
+  website      String?
+  industry     String?
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user     User?     @relation(fields: [userId], references: [id])
+  projects Project[]
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  icon        String
+  shortDesc   String
+  longDesc    String?
+  features    String[]
+  accentColor String   @default("#D4AF37")
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+// =============================================================================
+// 📨 INQUIRIES (QUERY)
+// =============================================================================
+
+model Query {
+  id        String      @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  website   String?
+  service   String?
+  budget    String?
+  timeline  String?
+  message   String
+  status    QueryStatus @default(NEW)
+  notes     String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum QueryStatus {
+  NEW
+  CONTACTED
+  IN_DISCUSSION
+  CONVERTED
+  ARCHIVED
+}
+
+// =============================================================================
+// ✅ TASKS & NOTES
+// =============================================================================
+
+model Task {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  status      TaskStatus @default(TODO)
+  priority    Priority   @default(MEDIUM)
+  dueDate     DateTime?
+  projectId   String?
+  assigneeId  String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  project  Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assignee User?    @relation("AssignedTasks", fields: [assigneeId], references: [id])
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  userId    String
+  pinned    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// =============================================================================
+// 💬 CHAT
+// =============================================================================
+
+model ChatChannel {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  isPrivate   Boolean  @default(false)
+  projectId   String?  @unique
+  createdAt   DateTime @default(now())
+
+  project  Project?      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  members  User[]        @relation("ChannelMembers")
+  messages ChatMessage[]
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  content   String
+  channelId String
+  senderId  String
+  edited    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  channel ChatChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  sender  User        @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([channelId])
+  @@index([createdAt])
+}
+
+// =============================================================================
+// 📊 ANALYTICS
+// =============================================================================
+
+model Analytics {
+  id        String   @id @default(cuid())
+  event     String
+  page      String?
+  userId    String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([event])
+  @@index([createdAt])
+}
+
+// =============================================================================
+// 🔔 NOTIFICATIONS
+// =============================================================================
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String?
+  link      String?
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([read])
+  @@index([createdAt])
+}
+
+enum NotificationType {
+  QUERY
+  PROJECT
+  TASK
+  MESSAGE
+  SYSTEM
+}
