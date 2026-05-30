@@ -183,15 +183,21 @@ function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-40 lg:hidden"
+          transition={{ duration: 0.2 }}
+          // ── z-50 matches navbar so nothing bleeds through
+          // ── inset-0 ensures it covers entire screen including behind navbar
+          className="fixed inset-0 z-50 lg:hidden"
         >
+          {/* ── Solid background first (instant) — prevents bleed-through ── */}
+          <div className="absolute inset-0 bg-nirvana-black" />
+
+          {/* ── Animated aurora overlay on top ── */}
           <motion.div
-            initial={{ clipPath: "circle(0% at 95% 5%)" }}
-            animate={{ clipPath: "circle(150% at 95% 5%)" }}
-            exit={{ clipPath: "circle(0% at 95% 5%)" }}
-            transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute inset-0 bg-aurora bg-nirvana-black"
+            initial={{ clipPath: "circle(0% at calc(100% - 32px) 32px)" }}
+            animate={{ clipPath: "circle(150% at calc(100% - 32px) 32px)" }}
+            exit={{ clipPath: "circle(0% at calc(100% - 32px) 32px)" }}
+            transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
+            className="absolute inset-0 bg-nirvana-black"
           >
             <div className="absolute inset-0 bg-grid-pattern opacity-20" />
             <motion.div
@@ -206,11 +212,28 @@ function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProps) {
             />
           </motion.div>
 
+          {/* ── Close button (X) — top right ── */}
+          <button
+            onClick={onClose}
+            aria-label="Close menu"
+            className="absolute top-5 right-5 z-10 w-11 h-11 flex items-center justify-center rounded-full glass border border-white/10"
+          >
+            <motion.div
+              initial={{ rotate: 0 }}
+              animate={{ rotate: 45 }}
+              className="relative w-5 h-5"
+            >
+              <span className="absolute top-1/2 left-0 w-full h-0.5 bg-nirvana-gold rounded-full -translate-y-1/2" />
+              <span className="absolute top-1/2 left-0 w-full h-0.5 bg-nirvana-gold rounded-full -translate-y-1/2 rotate-90" />
+            </motion.div>
+          </button>
+
+          {/* ── Scrollable content ── */}
           <div className="relative h-full flex flex-col px-6 pt-24 pb-10 overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
               className="text-xs font-mono text-nirvana-gold/70 uppercase tracking-[0.3em] mb-8"
             >
               ── Navigation
@@ -229,7 +252,7 @@ function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProps) {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -30 }}
                     transition={{
-                      delay: 0.4 + i * 0.1,
+                      delay: 0.3 + i * 0.08,
                       duration: 0.5,
                       ease: [0.22, 1, 0.36, 1],
                     }}
@@ -250,7 +273,9 @@ function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProps) {
                           size={28}
                           className={cn(
                             "transition-all duration-300 -rotate-45 group-hover:rotate-0",
-                            isActive ? "text-nirvana-gold" : "text-nirvana-gray-500"
+                            isActive
+                              ? "text-nirvana-gold"
+                              : "text-nirvana-gray-500"
                           )}
                         />
                       </div>
@@ -263,7 +288,7 @@ function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProps) {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.5 }}
+              transition={{ delay: 0.55, duration: 0.5 }}
               className="mt-10"
             >
               <Link
@@ -280,14 +305,13 @@ function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.9, duration: 0.5 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
               className="mt-auto pt-10 space-y-6"
             >
               <div className="space-y-3">
                 <div className="text-xs uppercase tracking-widest text-nirvana-gray-500">
                   Get in touch
                 </div>
-
                 <Link
                   href={`mailto:${CONTACT_INFO.email}`}
                   className="flex items-center gap-2 text-base text-nirvana-white/90 hover:text-nirvana-gold transition-colors"
@@ -295,7 +319,6 @@ function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProps) {
                   <Mail size={16} />
                   {CONTACT_INFO.email}
                 </Link>
-
                 <Link
                   href={`tel:${CONTACT_INFO.phoneRaw}`}
                   className="flex items-center gap-2 text-base text-nirvana-white/90 hover:text-nirvana-gold transition-colors"
