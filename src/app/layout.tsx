@@ -34,31 +34,88 @@ const jetbrainsMono = JetBrains_Mono({
 // 📋 METADATA
 // =============================================================================
 export const metadata: Metadata = {
+  // ── Basic ──────────────────────────────────────────
   title: {
-    default: "Nirvana Tech Solutions — We Build Digital Experiences That Feel Alive",
+    default: "Nirvana Tech Solutions — Web Agency in Jabalpur, India",
     template: "%s | Nirvana Tech Solutions",
   },
   description:
-    "Nirvana Tech Solutions creates futuristic websites, digital systems, and growth experiences for modern businesses.",
+    "Nirvana Tech Solutions is a premium web design & development agency in Jabalpur, Madhya Pradesh. We build stunning websites, digital marketing, SEO, and e-commerce solutions for businesses across India.",
+
+  // ── Keywords ───────────────────────────────────────
   keywords: [
-    "web design agency",
-    "digital agency India",
-    "Next.js development",
-    "premium website design",
-    "SEO services",
-    "e-commerce development",
+    "web agency Jabalpur",
+    "web design Jabalpur",
+    "digital agency Bhopal",
+    "web development Madhya Pradesh",
+    "website design India",
+    "SEO agency Jabalpur",
+    "digital marketing Jabalpur",
+    "e-commerce development India",
+    "Next.js agency India",
+    "Nirvana Tech Solutions",
+    "nirvanatechsolution.xyz",
   ],
-  openGraph: {
-    title: "Nirvana Tech Solutions",
-    description: "We build digital experiences that feel alive.",
-    type: "website",
-    locale: "en_US",
+
+  // ── Author ─────────────────────────────────────────
+  authors: [{ name: "Nirvana Tech Solutions", url: "https://nirvanatechsolution.xyz" }],
+  creator: "Nirvana Tech Solutions",
+  publisher: "Nirvana Tech Solutions",
+
+  // ── Canonical URL ──────────────────────────────────
+  metadataBase: new URL("https://nirvanatechsolution.xyz"),
+  alternates: {
+    canonical: "/",
   },
+
+  // ── Open Graph (Facebook, LinkedIn, WhatsApp) ──────
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://nirvanatechsolution.xyz",
+    siteName: "Nirvana Tech Solutions",
+    title: "Nirvana Tech Solutions — Web Agency in Jabalpur, India",
+    description:
+      "Premium web design, development & digital marketing agency. We build digital experiences that feel alive.",
+    images: [
+      {
+        url: "https://res.cloudinary.com/dwenbr9ny/image/upload/q_auto/f_auto/v1780300861/Copilot_20260601_133035_xw6d4h.png",
+        width: 1200,
+        height: 630,
+        alt: "Nirvana Tech Solutions — Web Agency",
+      },
+    ],
+  },
+
+  // ── Twitter/X Card ─────────────────────────────────
   twitter: {
     card: "summary_large_image",
-    title: "Nirvana Tech Solutions",
-    description: "We build digital experiences that feel alive.",
+    title: "Nirvana Tech Solutions — Web Agency",
+    description: "Premium web design & development agency in Jabalpur, India.",
+    images: ["https://res.cloudinary.com/dwenbr9ny/image/upload/q_auto/f_auto/v1780300861/Copilot_20260601_133035_xw6d4h.png"],
+    creator: "@nirvanatech",
   },
+
+  // ── Robots ─────────────────────────────────────────
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+
+  // ── Verification (add after setting up Google Search Console) ──
+  // verification: {
+  //   google: "YOUR_GOOGLE_VERIFICATION_CODE",
+  // },
+
+  // ── App links ──────────────────────────────────────
+  category: "technology",
 };
 
 // =============================================================================

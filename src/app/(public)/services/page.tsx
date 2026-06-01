@@ -9,13 +9,17 @@ import FaqAccordion from "@/components/services/FaqAccordion";
 // 📋 METADATA
 // =============================================================================
 export const metadata: Metadata = {
-  title: "Services — Nirvana Tech Solutions",
+  title: "Services — Web Design, SEO & Digital Marketing | Nirvana Tech",
   description:
-    "Six disciplines, one obsession. Premium websites, marketing, SEO, e-commerce, software, and analytics — built with craft and intention.",
+    "Explore our services: website design, digital marketing, SEO optimization, e-commerce development, and software solutions. Serving businesses in Jabalpur and across India.",
+  alternates: {
+    canonical: "https://nirvanatechsolution.xyz/services",
+  },
   openGraph: {
     title: "Services — Nirvana Tech Solutions",
-    description: "Six disciplines that transform vision into reality.",
-    type: "website",
+    description:
+      "Six expert services to grow your digital presence. Web design, SEO, marketing, e-commerce and more.",
+    url: "https://nirvanatechsolution.xyz/services",
   },
 };
 

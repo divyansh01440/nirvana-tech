@@ -8,13 +8,17 @@ import OfficeMap from "@/components/query/OfficeMap";
 // 📋 METADATA
 // =============================================================================
 export const metadata: Metadata = {
-  title: "Get in Touch — Nirvana Tech Solutions",
+  title: "Contact Us — Get a Free Quote | Nirvana Tech Solutions",
   description:
-    "Tell us about your project. We respond within 24 hours. Free discovery call, transparent pricing, no pressure.",
+    "Start your project with Nirvana Tech Solutions. Get a free consultation and quote for your website, app, or digital marketing campaign. Based in Jabalpur, working worldwide.",
+  alternates: {
+    canonical: "https://nirvanatechsolution.xyz/query",
+  },
   openGraph: {
-    title: "Get in Touch — Nirvana Tech Solutions",
-    description: "Start the conversation. We're listening.",
-    type: "website",
+    title: "Contact Nirvana Tech Solutions",
+    description:
+      "Tell us about your project. We respond within 24 hours.",
+    url: "https://nirvanatechsolution.xyz/query",
   },
 };
 

@@ -1,0 +1,21 @@
+{
+    "name": "Nirvana Tech Solutions",
+    "short_name": "Nirvana Tech",
+    "description": "Premium web agency in Jabalpur, India",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#050505",
+    "theme_color": "#D4AF37",
+    "icons": [
+      {
+        "src": "https://res.cloudinary.com/dwenbr9ny/image/upload/q_auto/f_auto/v1780300861/Copilot_20260601_133035_xw6d4h.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "https://res.cloudinary.com/dwenbr9ny/image/upload/q_auto/f_auto/v1780300861/Copilot_20260601_133035_xw6d4h.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
