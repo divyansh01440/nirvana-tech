@@ -110,9 +110,9 @@ export const metadata: Metadata = {
   },
 
   // ── Verification (add after setting up Google Search Console) ──
-  // verification: {
-  //   google: "YOUR_GOOGLE_VERIFICATION_CODE",
-  // },
+  verification: {
+    google: "A5MKZciMfs8K2HvrZJ3h7_RdOY-GExCt_QtPy4XrLA8",
+  },
 
   // ── App links ──────────────────────────────────────
   category: "technology",
