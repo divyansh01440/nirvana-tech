@@ -41,6 +41,17 @@ export const metadata: Metadata = {
   },
   description:
     "Nirvana Tech Solutions is a premium web design & development agency in Jabalpur, Madhya Pradesh. We build stunning websites, digital marketing, SEO, and e-commerce solutions for businesses across India.",
+  // Add this inside export const metadata: Metadata = { ... }
+
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon.ico",
+  },
 
   // ── Keywords ───────────────────────────────────────
   keywords: [
